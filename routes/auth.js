@@ -42,7 +42,7 @@ router.get('/sub', async (req, res) => {
 });
 
 router.get('/confirm', (req, res) => {
-  console.log("confirm -->", req.query[0]);
+  console.log("confirm -->", req.query[Object.keys(req.query)[0]]);
   res.status(200).send("ok")
 })
 
