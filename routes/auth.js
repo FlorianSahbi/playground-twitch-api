@@ -25,8 +25,9 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/sub', async (req, res) => {
+  console.log("sub")
   const data = {
-    "hub.callback": "http://localhost:3000/auth/confirm",
+    "hub.callback": "https://shielded-thicket-62633.herokuapp.com/auth/confirm",
     "hub.mode": "subscribe",
     "hub.topic": "https://api.twitch.tv/helix/streams?user_id=63875647",
     "hub.lease_seconds": "864000"
