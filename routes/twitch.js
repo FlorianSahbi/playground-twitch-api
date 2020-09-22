@@ -58,6 +58,24 @@ router.get('/webhook/unsubscribe/:userId', async (req, res) => {
   res.send("hello world")
 });
 
+router.get('/webhook/bie/:userId', async (req, res) => {
+  console.log(req.params.userId)
+  const data = {
+    "hub.callback": `https://shielded-thicket-62633.herokuapp.com/auth/confirm`,
+    "hub.mode": "unsubscribe",
+    "hub.topic": `https://api.twitch.tv/helix/streams?user_id=63875647`,
+    "hub.lease_seconds": "864000"
+  }
+  try {
+    await axios.post("https://api.twitch.tv/helix/webhooks/hub", data, { headers });
+  } catch (error) {
+    console.log(error)
+    res.send(error);
+  }
+  res.send("hello world")
+});
+
+
 router.get('/webhook/:userId', (req, res) => {
   console.log("confirm -->", req.query[Object.keys(req.query)[0]]);
   res.status(200).send(req.query[Object.keys(req.query)[0]])
