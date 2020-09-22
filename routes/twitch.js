@@ -2,13 +2,14 @@ const express = require('express');
 const router = express.Router();
 const axios = require("axios");
 
+// 63875647 Yul userId
+
 const headers = {
   "Client-ID": "m76caohkundcwwjv0v3bb0ul5qj4ag",
-  "Authorization": "Bearer v1a6v1pl0860xx9zsklvtzkexw6mu9",
+  "Authorization": "Bearer e72bnxzdx9okyk4i1kxsrka1ldtiok",
 }
 
-// OK
-router.get('/', async (req, res) => {
+router.get('/token', async (req, res) => {
   const params = {
     client_id: "m76caohkundcwwjv0v3bb0ul5qj4ag",
     client_secret: "cenj56ld4rfbpyqtbr7ik0o699p8xk",
@@ -16,7 +17,6 @@ router.get('/', async (req, res) => {
   }
   try {
     const response = await axios.post("https://id.twitch.tv/oauth2/token", null, { params })
-    console.log(response);
     res.send(response.data);
   } catch (error) {
     if (error && error.response)
@@ -24,12 +24,12 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.get('/sub', async (req, res) => {
-  console.log("sub")
+router.get('/webhook/subscribe/:userId', async (req, res) => {
+  console.log(req.params.userId)
   const data = {
-    "hub.callback": "https://shielded-thicket-62633.herokuapp.com/auth/confirm",
+    "hub.callback": `https://shielded-thicket-62633.herokuapp.com/twitch/webhook/${req.params.userId}`,
     "hub.mode": "subscribe",
-    "hub.topic": "https://api.twitch.tv/helix/streams?user_id=63875647",
+    "hub.topic": `https://api.twitch.tv/helix/streams?user_id=${req.params.userId}`,
     "hub.lease_seconds": "864000"
   }
   try {
@@ -41,16 +41,14 @@ router.get('/sub', async (req, res) => {
   res.send("hello world")
 });
 
-router.get('/confirm', (req, res) => {
+router.get('/webhook/:userId', (req, res) => {
   console.log("confirm -->", req.query[Object.keys(req.query)[0]]);
   res.status(200).send(req.query[Object.keys(req.query)[0]])
 })
 
-// OK
-router.get('/getStreams', async (req, res) => {
+router.get('/subscriptions', async (req, res) => {
   try {
     const response = await axios.get("https://api.twitch.tv/helix/webhooks/subscriptions", { params: { first: 10 }, headers });
-    console.log(response.data);
     res.send(response.data);
   } catch (error) {
     console.log(error)
