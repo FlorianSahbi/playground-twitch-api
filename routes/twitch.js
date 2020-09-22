@@ -46,6 +46,11 @@ router.get('/webhook/:userId', (req, res) => {
   res.status(200).send(req.query[Object.keys(req.query)[0]])
 })
 
+router.post('/webhook/:userId', (req, res) => {
+  console.log("response -->", res);
+  res.status(200).send(res);
+})
+
 router.get('/subscriptions', async (req, res) => {
   try {
     const response = await axios.get("https://api.twitch.tv/helix/webhooks/subscriptions", { params: { first: 10 }, headers });
