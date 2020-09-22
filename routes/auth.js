@@ -76,7 +76,7 @@ router.get('/webhook/bie/:userId', async (req, res) => {
 });
 
 
-router.get('/webhook/:userId', (req, res) => {
+router.get('/confirm', (req, res) => {
   console.log("confirm -->", req.query[Object.keys(req.query)[0]]);
   res.status(200).send(req.query[Object.keys(req.query)[0]])
 })
